@@ -5,7 +5,7 @@ from pymystem3 import Mystem
 import time
 from collections import OrderedDict
 import cProfile
-
+from collections import defaultdict
 
 class CsvHandler:
     #INPUTFILE = 'corpus-ru-dbpedia-short-dea.csv'
@@ -17,7 +17,8 @@ class CsvHandler:
         self.file_name = self.INPUTFILE
         self.csvlength = 0
         self.lemmatiser = Mystem()
-        self.freq_dict = {}
+        #self.freq_dict = {}
+        self.fd = defaultdict(dict)
 
     def do_cprofile(func):
         def profiled_func(*args, **kwargs):
@@ -49,17 +50,21 @@ class CsvHandler:
                 for i, li in enumerate(lemmas):
                     for j, lj in enumerate(lemmas):
                         if i < j:
-                            key = li + ":::" + lj
-                            if self.freq_dict.get(key, None):
-                                self.freq_dict[key] += 1
-                            else:
-                                self.freq_dict[key] = 1
+                            self.fd[li][lj] = 1 if lj not in self.fd[li] else self.fd[li][lj] + 1
+                            #key = li + ":::" + lj
+                            #if self.freq_dict.get(key, None):
+                            #    self.freq_dict[key] += 1
+                            #else:
+                            #    self.freq_dict[key] = 1
         t1 = time.time()
+        for a in self.fd:
+            for b in self.fd[a]:
+                print(a, b, self.fd[a][b])
         print("Finished. Get input file processing time %2.2f secs, whoosh !" % (t1 - t0))
 
-    @do_cprofile
-    def sort_dict(self):
-        return OrderedDict(sorted(self.freq_dict.items(), key=lambda t: t[1], reverse=True))
+    #@do_cprofile
+    #def sort_dict(self):
+    #    return OrderedDict(sorted(self.freq_dict.items(), key=lambda t: t[1], reverse=True))
 
 
     def get_lem_set(self, text):
@@ -111,14 +116,13 @@ class CsvHandler:
 
     def process(self):
         self.get_freq_dict(self.file_name)
-        if self.freq_dict:
+        #if self.freq_dict:
             #t0 = time.time()
             #sorted_dict = self.sort_dict()
             #t1 = time.time()
             #print("Finished. Sorting -  processing time %2.2f secs, whoosh !" % (t1 - t0))
             #self.output_dict(self.OUTPUTFILE, sorted_dict, 2)
-
-            self.output_dict(self.OUTPUTFILE, self.freq_dict, 2)
+            #self.output_dict(self.OUTPUTFILE, self.freq_dict, 2)
 
 
 if __name__ == '__main__':
