@@ -123,21 +123,25 @@ def get_synsets(yarn_fpath, synset_fpath):
         for i, row in words.iterrows():
             synsets[row.synset_id].add(row.word)
         
-            if prev_id != -1 and row.synset_id != prev_id:                 
-                print >> synset_file, "\n"                            
+            if prev_id != -1 and row.synset_id != prev_id:
+                print >> synset_file, "\n"
             else:
-                print >> synset_file, "%s," % row.word, 
+                print >> synset_file, "%s," % row.word,
             prev_id = row.synset_id
             
     return synsets
 
-def generate_pairs(synsets, output_fpath, symmetric=True):
+
+def generate_pairs(synsets, output_fpath, symmetric=True, spaser=False):
     with codecs.open(output_fpath, "w", "utf-8") as output_file:
+        print >> output_file, "word1,word2,sim"
         for s in synsets:
             for i, wi in enumerate(synsets[s]):
                 for j, wj in enumerate(synsets[s]):
                     if not symmetric and i > j:
-                        print >> output_file, "%s\t%s" % (wi, wj)
+                        print >> output_file, "%s,%s,syn" % (wi, wj)
                     elif i != j:
-                        print >> output_file, "%s\t%s" % (wi, wj)
-            print >> output_file, ""
+                        print >> output_file, "%s,%s,syn" % (wi, wj)
+            if spaser: print >> output_file, ""
+
+    print "synonyms:", output_fpath
