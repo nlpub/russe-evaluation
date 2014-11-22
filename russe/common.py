@@ -39,7 +39,7 @@ def sample_pairs(pairs_fpath, test_each=2):
             else:
                 out = train
                 train_pairs += 1
-            print >> out, "%s,%s,%f" % (row["word1"], row["word2"], row["sim"])
+            print >> out, "%s,%s,%s" % (row["word1"], row["word2"], str(row["sim"]))
             
     print "TEST"
     print "file:", test_fpath
@@ -132,7 +132,7 @@ def get_synsets(yarn_fpath, synset_fpath):
     return synsets
 
 
-def generate_pairs(synsets, output_fpath, symmetric=True, spaser=False):
+def generate_synonyms(synsets, output_fpath, symmetric=True, spaser=False):
     with codecs.open(output_fpath, "w", "utf-8") as output_file:
         print >> output_file, "word1,word2,sim"
         for s in synsets:
