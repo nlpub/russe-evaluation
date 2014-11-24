@@ -7,6 +7,7 @@ from collections import defaultdict
 import traceback
 from pandas import read_csv
 from os.path import join
+from russe.common import get_pos
 
 # imports from dsl nlp library
 from nlp.patterns import re_numbers, re_latin_chars
@@ -202,13 +203,24 @@ def generate_cohypo(relations, entries, synsets, concepts, output_fpath):
         print "cohypo relations:", output_fpath
          
     
-def mix_filter_relations(output_syn_fpath, output_rel_fpath, output_cohypo_fpath, output_fpath, selected_words):
+def mix_filter_relations(output_syn_fpath, output_rel_fpath, output_cohypo_fpath, output_fpath, selected_words, cohypo=False):
     syn_df = read_csv(output_syn_fpath, ',', encoding='utf8')
     rel_df = read_csv(output_rel_fpath, ',', encoding='utf8')
-    #cohypo_df = read_csv(output_cohypo_fpath, ',', encoding='utf8')
     print "relations loaded"
     df = syn_df.append(rel_df)
-    #df = df.append(cohypo_df)
+    if cohypo:
+        cohypo_df = read_csv(output_cohypo_fpath, ',', encoding='utf8')
+        df = df.append(cohypo_df)
+    
+    # for i, row in df.iterrows():
+    #     if i % 100000 == 0: print i
+    #     if row["word1"] in ["болезнь", u"болезнь"]:
+    #         a = get_pos(row["word1"])[0] != "S" or get_pos(row["word2"])[0] != "S"
+    #         b = row["sim"] not in ["hyper", "hypo", "syn"]
+    #         print row["word1"], row["word2"], row["sim"], a, b
+
+    # return 
+
     df = df.sort(['word1', 'sim'], ascending=[1, 1])
     print "sorted"
     df.to_csv(output_fpath + ".all", sep=',', encoding='utf-8', index=False)
@@ -217,11 +229,27 @@ def mix_filter_relations(output_syn_fpath, output_rel_fpath, output_cohypo_fpath
     # Filter according to relation types
     rels2drop = [i for i, row in df.iterrows() if row["sim"] not in ["hyper", "hypo", "syn"]]
     df = df.drop(rels2drop)
+    df.to_csv(output_fpath + ".hhs" , sep=',', encoding='utf-8', index=False)
     print "#relations hypo/hyper/syn:", len(df)
+    print "relations hypo/hyper/syn:", output_fpath + ".hhs"
 
-    return    
     # Filter accoring to part of speech
+    #rels2drop = [i for i, row in df.iterrows() if get_pos(row["word1"])[0] != "S" or get_pos(row["word2"])[0] != "S"]
+    r2d = []
+    with codecs.open("pos", "w", "utf-8") as pos_file:
+        for i, row in df.iterrows():
+            pos1 = get_pos(row["word1"])[0]
+            pos2 = get_pos(row["word2"])[0]
+            drop = pos1 != "S" or pos2 != "S"
+            if drop:
+                r2d.append(i)
+            print >> pos_file, "%s,%s,%s,%s,%s" % (row["word1"], row["word2"], row["sim"], pos1, pos2)
 
+    df = df.drop(r2d)
+    df.to_csv(output_fpath + ".pos" , sep=',', encoding='utf-8', index=False)
+    print "#relations pos:", len(df)
+    print "relations pos:", output_fpath + ".pos"    
+    
     # Filter according to vocabulary
     rels2drop = [i for i, row in df.iterrows() if row["word1"] not in selected_words]
     print "#relations to drop:", len(rels2drop)
