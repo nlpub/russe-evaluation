@@ -32,7 +32,7 @@ class MutualInfo:
         print("Start freq dict", file=sys.stderr)
         with open(filename, 'r') as csvfile:
             datareader = csv.reader(csvfile, delimiter=DELIMITER)
-            for ln, row in enumerate(datareader):
+            for i, row in enumerate(datareader):
                 self.fd[row[0]] = float(row[1])
 
         t1 = time.time()
@@ -44,17 +44,14 @@ class MutualInfo:
     def calculate_MI(self, filename):
 
         t0 = time.time()
-        counter = 0
         with open(filename, 'r') as csvfile:
             datareader = csv.reader(csvfile, delimiter=DELIMITER)
             first_line = True
-            for ln, row in enumerate(datareader):
+            for i, row in enumerate(datareader):
+                if i % 100000 == 0: print(i)
                 if first_line:
                     first_line = False
                     continue
-                #if counter > 3:
-                    #break
-                counter += 1
                 word1 = row[0]
                 word2 = row[1]
                 freq = row[2]
