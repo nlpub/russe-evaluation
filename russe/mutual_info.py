@@ -48,7 +48,7 @@ class MutualInfo:
             datareader = csv.reader(csvfile, delimiter=DELIMITER)
             first_line = True
             for i, row in enumerate(datareader):
-                if i % 100000 == 0: print(i)
+                if i % 1000000 == 0: print(i, file=sys.stderr)
                 if first_line:
                     first_line = False
                     continue
@@ -58,7 +58,6 @@ class MutualInfo:
                 pxy = int(freq)/self.WW_NUM
                 px = self.fd.get(word1, 1)/float(len(self.fd))
                 py = self.fd.get(word2, 1)/float(len(self.fd))
-                #print (">>>", px, py, pxy, px * py, pxy / (px*py), math.log(pxy/(px*py)))
                 final_score = math.log(pxy/(px*py))
 
                 print("%s\t%s\t%f" % (word1, word2, final_score))
