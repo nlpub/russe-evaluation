@@ -8,6 +8,8 @@ import traceback
 from pandas import read_csv
 from os.path import join
 from russe.common import get_pos
+from pandas import DataFrame
+from nlp.morpho.mystem import analyze_simple
 
 # imports from dsl nlp library
 from nlp.patterns import re_numbers, re_latin_chars
@@ -24,6 +26,7 @@ T = {u"выше": u"hyper",
 MAX_REL_NUM = 30
 WHITE_LIST = "white-list.csv"
 BLACK_LIST = "black-list.csv"
+MAX_PAIRS_NUM = 999999999
 
 
 def load_syn(syn_fpath):
@@ -278,3 +281,50 @@ def generate_best(input_fpath, best_fpath, res_fpath):
     
     df.to_csv(best_fpath, sep=',', encoding='utf-8', index=False)
     print "best relations:", best_fpath
+
+
+
+def clean_ae_fuzzy_duplicates(input_fpath, output_fpath):
+    build_row = lambda x: {"sim": x["sim"], "dir": x["dir"], "inv": x["inv"]}
+    build_full_row = lambda x: {"word1": x["word1"], "word2": x["word2"], 
+                                "sim": x["sim"], "dir": x["dir"], "inv": x["inv"]}
+    
+    df = read_csv(input_fpath, ',', encoding='utf8')
+
+    # lemmatize
+    r = defaultdict(dict)
+
+    for i, row in df.iterrows():
+        word1, _ = analyze_simple(row["word1"])[0]
+        word2, _ = analyze_simple(row["word2"])[0]
+        
+        if word1 in r and word2 in r[word1]:
+            # Pair is not new -- check it 
+            new_val = row["dir"] + row["inv"]
+            old_val = r[word1][word2]["dir"] + r[word1][word2]["inv"]
+            if new_val > old_val:
+                # Use new pair
+                r[word1][word2] = build_full_row(row)
+                print ".", 
+            else:
+                # Keed old pair
+                pass 
+        else:
+            # Pair is new -- add it
+            r[word1][word2] = build_full_row(row)
+        
+        if i > MAX_PAIRS_NUM: break
+    print ""
+    
+    # convert to the right format
+    rr = [{"word1":r[w1][w2]["word1"], "word2":r[w1][w2]["word2"],
+           "sim":r[w1][w2]["sim"], "dir":r[w1][w2]["dir"], "inv":r[w1][w2]["inv"] }
+          for w1 in r for w2 in r[w1]]
+    
+    
+    
+    # create a new table with lemmas
+    
+    df = DataFrame(rr)
+    df.to_csv(output_fpath, sep=',', index=False, encoding='utf-8', cols=["word1","word2","sim","dir","inv"])    
+    print "output:", output_fpath
