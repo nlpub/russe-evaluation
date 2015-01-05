@@ -129,6 +129,50 @@ def sample_pairs(pairs_fpath, test_each=2, extended=False):
     print "#stimuls:", train_stim
 
 
+def split_pairs(pairs_fpath, folds=10, extended=False):
+    pairs = pd.read_csv(pairs_fpath, ';', encoding='utf8')
+    
+    out_fpath = splitext(pairs_fpath)[0] + "-split.csv"
+    src = pairs_fpath.split("/")[-1]
+
+    with codecs.open(out_fpath, "w", "utf-8") as out:
+        print >> out, "num,word1,word2,related,comment,src"
+        
+        prev = "*"
+        stim_num = 0
+        
+        from collections import defaultdict
+        res = defaultdict(list)
+
+        for i, row in pairs.iterrows():
+            if row["word1"] != prev:
+                stim_num += 1
+                f_stim = stim_num % folds
+            prev = row["word1"]
+
+            res[f_stim].append((row["word1"], row["word2"], row["sim"]))
+        
+        for k in res:
+            for i, p in enumerate(res[k]):
+                print >> out, "%d,%s,%s,,,%s" % (k, p[0], p[1], src)
+            print k, ":", i
+        
+        print "output:", out_fpath
+        #print res
+
+    # print "TEST"
+    # print "file:", test_fpath
+    # print "#pairs:", wc(test_fpath)
+    # print "#stimuls:", test_stim
+
+    # print "\nTRAIN"
+    # print "file:", train_fpath
+    # print "#pairs:", wc(train_fpath)
+    # print "#stimuls:", train_stim
+
+
+
+
 def process_associations(ae_fpath, ae_stat_fpath):
     ae = pd.read_csv(ae_fpath, ',', encoding='utf8')
     print "#pairs:", len(ae)
