@@ -91,7 +91,7 @@ def generate_negatives(relations_fpath, freq_fpath, pmi_w1_fpath, pmi_fpath, mul
     common_fpath = splitext(relations_fpath)[0] + "-common.csv"
     freq_pkl_fpath = freq_fpath + ".pkl"
     pos_df = read_csv(relations_fpath, ',', encoding='utf8')
-    rel_freq = Counter([w for w in pos_df.word1])
+    rel_freq = Counter([w for w in pos_df["word1"]])
 
     if exists(freq_pkl_fpath):
         print "loading frequency dictionary from:", freq_pkl_fpath
@@ -114,7 +114,8 @@ def generate_negatives(relations_fpath, freq_fpath, pmi_w1_fpath, pmi_fpath, mul
     # save common relations and load them
     idx2del = []
     for i, row in pos_df.iterrows():
-        if row.word1 not in common: idx2del.append(i)
+        #print row
+        if "word1" in row and row["word1"] not in common: idx2del.append(i)
 
     common_df = pos_df.copy()
     common_df.drop(idx2del)
@@ -122,7 +123,7 @@ def generate_negatives(relations_fpath, freq_fpath, pmi_w1_fpath, pmi_fpath, mul
 
     positives = defaultdict(list)
     for w1, rows in common_df.groupby(["word1"]):
-        for i, row in rows.iterrows(): positives[w1].append(row.word2)
+        for i, row in rows.iterrows(): positives[w1].append(row["word2"])
 
     # find all related words
     with codecs.open(output_fpath, "w", "utf-8") as out:
