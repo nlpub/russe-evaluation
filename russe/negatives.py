@@ -120,6 +120,7 @@ def generate_negatives(relations_fpath, freq_fpath, pmi_w1_fpath, pmi_fpath, mul
     common_df = pos_df.copy()
     common_df.drop(idx2del)
     common_df.to_csv(common_fpath, delimiter=";", encoding="utf-8", index=False)
+    print "common relations (pmi && dict):", common_fpath
 
     positives = defaultdict(list)
     for w1, rows in common_df.groupby(["word1"]):
@@ -160,6 +161,7 @@ def generate_negatives(relations_fpath, freq_fpath, pmi_w1_fpath, pmi_fpath, mul
                 rels.append((w2, sim))
             w1_prev = w1
 
+    print "negatives:", output_fpath
     print "elapsed: %d sec." % (time() - tic)
     
 
