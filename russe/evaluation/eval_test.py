@@ -4,10 +4,11 @@ from os.path import join, splitext, basename, dirname
 from pandas import read_csv, Series
 from collections import defaultdict
 import argparse
-from russe.evaluation.eval import hj_evaluation
+from sys import stderr
+from russe.evaluation.eval import hj_evaluation, semantic_relation_classification_evaluation
 
 
-TEST_DIR = "/Users/sasha/work/russe/dataset/test"
+TEST_DIR = "/home/sasha/tmp/russe/eval/dataset/test"
 HJ_TEST = join(TEST_DIR, "hj-test.csv")
 RT_TEST = join(TEST_DIR, "rt-test.csv")
 AE_TEST = join(TEST_DIR, "ae-test.csv")
@@ -62,7 +63,10 @@ def evaluation(args):
     ae_fpath = create_usim(AE_TEST, args.test_fpath)
     ae2_fpath = create_usim(AE2_TEST, args.test_fpath)
 
-    hj_evaluation(hj_fpath)
+    print >> stderr, "hj:", hj_evaluation(hj_fpath)
+    print >> stderr, "rt:",semantic_relation_classification_evaluation(rt_fpath)
+    print >> stderr, "ae:",semantic_relation_classification_evaluation(ae_fpath)
+    print >> stderr, "ae2:",semantic_relation_classification_evaluation(ae2_fpath)
 
 
 def main():
