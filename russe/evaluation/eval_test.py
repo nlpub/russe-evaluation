@@ -63,10 +63,14 @@ def evaluation(args):
     ae_fpath = create_usim(AE_TEST, args.test_fpath)
     ae2_fpath = create_usim(AE2_TEST, args.test_fpath)
 
-    print >> stderr, "hj:", hj_evaluation(hj_fpath)
-    print >> stderr, "rt:",semantic_relation_classification_evaluation(rt_fpath)
-    print >> stderr, "ae:",semantic_relation_classification_evaluation(ae_fpath)
-    print >> stderr, "ae2:",semantic_relation_classification_evaluation(ae2_fpath)
+    
+    r = {}
+    r["hj"] = hj_evaluation(hj_fpath)
+    r["rt-avep"], r["rt-accuracy"] = semantic_relation_classification_evaluation(rt_fpath)
+    r["ae-avep"], r["ae-accuracy"] = semantic_relation_classification_evaluation(ae_fpath)
+    r["ae2-avep"], r["ae2-accuracy"] = semantic_relation_classification_evaluation(ae2_fpath)
+    print >> stderr, "hj\trt-avep\trt-accuracy\tae-avep\tae-accuracy\tae2-avep\tae2-accuracy"
+    print >> stderr, "%(hj).5f\t%(rt-avep).5f\t%(rt-accuracy).5f\t%(ae-avep).5f\t%(ae-accuracy).5f\t%(ae2-avep).5f\t%(ae2-accuracy).5f" % r
 
 
 def main():
