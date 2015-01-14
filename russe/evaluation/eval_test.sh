@@ -1,6 +1,6 @@
 #!/bin/bash
 
-for submission in `find $1 -type d | sort` ; do
+for submission in `find $1 -maxdepth 1 -type d | sort` ; do
 	testcsv="$submission/test.csv"
 	if [ -a $testcsv ] ; then
 		echo $testcsv
@@ -8,8 +8,12 @@ for submission in `find $1 -type d | sort` ; do
 	fi    
 done
 
+
+# print entire results table with python
+# read all results.txt
+# save the results
 echo "===================================================="
-find $1 -iname "results.txt" -exec ls '{}' \; -exec echo "" \; -exec cat '{}' \;
+find $1 -maxdepth 2 -iname "results.txt" -exec echo "" \; -exec ls '{}' \; -exec cat '{}' \;
 
 
 

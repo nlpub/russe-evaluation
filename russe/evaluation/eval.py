@@ -109,6 +109,7 @@ def predict_by_sim(df_fpath):
     df.to_csv(output_fpath, sep=',', encoding='utf-8', index=False)
     print "predict:", output_fpath
     
+    df = df.fillna(0.0)
     y_test = df.sim.values.tolist()
     y_predict = df.predict.values.tolist()
     y_score = df.usim.values.tolist()
