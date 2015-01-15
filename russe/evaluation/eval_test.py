@@ -8,7 +8,7 @@ from sys import stderr
 from russe.evaluation.eval import hj_evaluation, semantic_relation_classification_evaluation
 
 
-TEST_DIR = "/home/sasha/tmp/russe/eval/dataset/train"
+TEST_DIR = "."  #/home/sasha/tmp/russe/eval/dataset/test"
 HJ_TEST = join(TEST_DIR, "hj-test.csv")
 RT_TEST = join(TEST_DIR, "rt-test.csv")
 AE_TEST = join(TEST_DIR, "ae-test.csv")
