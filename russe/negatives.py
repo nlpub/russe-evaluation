@@ -9,6 +9,8 @@ from os.path import splitext, join
 from collections import Counter
 from nlp.morpho.mystem import get_pos
 from collections import defaultdict
+from sys import stderr
+
 
 rt_fpath = "/home/ubuntu/russe/annotate/rt-test.csv"
 ae_fpath = "/home/ubuntu/russe/annotate/ae-test.csv"
@@ -20,6 +22,64 @@ pmi_fpath = "/home/ubuntu/russe/pmi.csv.gz" # 265058509 lines
 MAX_PMI = -0.02
 MIN_LEN = 3
 MULT_COEFF = 2
+
+
+def print_rel_stat(s, title):
+    print title
+    pos = 0
+    neg = 0
+    for x in s:
+        print x, s[x]
+        if x == "random": neg += s[x]
+        else: pos += s[x]
+            
+    print "pos:", pos
+    print "neg:", neg
+
+        
+def filter_unbalanced_words(train_fpath, print_skipped=False):
+    out_fpath = splitext(train_fpath)[0] + "-out.csv"
+
+    with codecs.open(out_fpath, "w", "utf-8") as out:
+        print >> out, "word1,word2,related,sim"
+        df = read_csv(train_fpath, ',', encoding='utf8')
+        word_num = 0
+        rel_num = 0
+        rel_skipped_num = 0
+        rel_used_num = 0
+        s_total = Counter()
+        s_skipped = Counter()
+        s_used = Counter()
+        for w1, rows in df.groupby(["word1"]):
+            word_num += 1
+
+            # calculate distribution of relations
+            s = Counter()
+            for i, row in rows.iterrows(): s[row.sim] += 1
+
+            # save word relations if distribution is ok        
+            if "random" in s and ("syn" in s or "hyper" in s or "hypo" in s or "assoc" in s):
+                for i, row in rows.iterrows():
+                    rel_num += 1            
+                    print >> out, "%s,%s,%s,%d" % (
+                        row.word1, row.word2, row.sim, 0 if row.sim == "random" else 1)
+                    rel_used_num += 1
+                s_used += s
+            else:
+                for i, row in rows.iterrows():
+                    if print_skipped: print >> stderr, "%s,%s,%s,%d" % (
+                        row.word1, row.word2, row.sim, 0 if row.sim == "random" else 1)
+                    rel_skipped_num += 1
+                s_skipped += s
+            s_total += s
+
+    print "words num:", word_num
+    print "relations num:", rel_num
+    print "relations skipped num:", rel_skipped_num
+    print "relations used num:", rel_used_num
+    print_rel_stat(s_total, "\ntotal relations:")
+    print_rel_stat(s_skipped, "\nskipped relations:")
+    print_rel_stat(s_used, "\nused relations:")
 
 
 def merge_pos_and_neg(pos_fpath, neg_fpath, freq_fpath):

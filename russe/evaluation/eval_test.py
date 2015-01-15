@@ -8,7 +8,7 @@ from sys import stderr
 from russe.evaluation.eval import hj_evaluation, semantic_relation_classification_evaluation
 
 
-TEST_DIR = "/home/sasha/tmp/russe/eval/dataset/test"
+TEST_DIR = "/home/sasha/tmp/russe/eval/dataset/train"
 HJ_TEST = join(TEST_DIR, "hj-test.csv")
 RT_TEST = join(TEST_DIR, "rt-test.csv")
 AE_TEST = join(TEST_DIR, "ae-test.csv")
@@ -56,6 +56,9 @@ def create_usim(df_fpath, test_fpath):
 
 
 def evaluation(args):
+    #hj_evaluation("/home/sasha/tmp/russe/eval/train-submission/ae2-test-usim.csv")
+    #return
+    
     print "test.csv:", args.test_fpath
 
     hj_fpath = create_usim(HJ_TEST, args.test_fpath)
@@ -66,6 +69,8 @@ def evaluation(args):
     
     r = {}
     r["hj"] = hj_evaluation(hj_fpath)
+    r["aehj"] = hj_evaluation(ae_fpath)
+    r["ae2hj"] = hj_evaluation(ae2_fpath)
     r["rt-avep"], r["rt-accuracy"] = semantic_relation_classification_evaluation(rt_fpath)
     r["ae-avep"], r["ae-accuracy"] = semantic_relation_classification_evaluation(ae_fpath)
     r["ae2-avep"], r["ae2-accuracy"] = semantic_relation_classification_evaluation(ae2_fpath)
