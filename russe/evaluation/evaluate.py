@@ -4,6 +4,8 @@ import argparse
 from pandas import read_csv
 from scipy.stats import pearsonr, spearmanr
 from os.path import splitext
+import matplotlib
+matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import numpy as np
 from sklearn.metrics import average_precision_score, precision_recall_curve, \
