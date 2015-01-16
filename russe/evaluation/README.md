@@ -1,7 +1,7 @@
 Running evaluation script 
 --------------------
 
-This are instructions are for Ubuntu Linux, but the script should works well on Mac OSX and Windows as well (just install required dependencies). 
+This are instructions are for Ubuntu Linux, but the script should work well on Mac OSX and Windows as well (just install required dependencies). 
 
 
 1. Clone the git repository:
@@ -13,7 +13,7 @@ This are instructions are for Ubuntu Linux, but the script should works well on 
 2. Install dependencies:
 
     ```
-    sudo apt-get install python-dev python-pip python-numpy python-scipy python-pandas python-matplotlib python-sklearn
+    sudo apt-get install python-numpy python-scipy python-pandas python-matplotlib python-sklearn
     ```
 
 3. Go to the evaluation directory:
@@ -27,6 +27,7 @@ This are instructions are for Ubuntu Linux, but the script should works well on 
 5. Run the evaluation:
 
     ```
+    ./evaluation_test.py test-sample.csv
     ./evaluation_test.py ~/path/to/your/test.csv
     ```
 
