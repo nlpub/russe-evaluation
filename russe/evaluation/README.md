@@ -27,7 +27,7 @@ This are instructions are for Ubuntu Linux, but the script should works well on 
 5. Run the evaluation:
 
     ```
-    ./evaluation_test.py ~/path/to/your/test.csv
+    ./evaluate_test.py ~/path/to/your/test.csv
     ```
 
 Results of the evaluations are printet to stdout. Most essential metrics are also printed to stderr. You should see something like this:
