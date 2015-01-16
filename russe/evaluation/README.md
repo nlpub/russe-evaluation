@@ -4,28 +4,29 @@ Running evaluation script
 
 1. Clone the git repository:
 
-```
-git clone https://github.com/nlpub/russe-evaluation.git
-```
+    ```
+    git clone https://github.com/nlpub/russe-evaluation.git
+    ```
 
 2. Install dependencies:
 
-```
-sudo pip install pandas matplotlib numpy scipy sklearn
-```
+    ```
+    sudo pip install pandas matplotlib numpy scipy sklearn
+    ```
 
-2. Go to the evaluation directory:
+3. Go to the evaluation directory:
 
-```
-cd ./russe/evaluation
-```
+    ```
+    cd ./russe/evaluation
+    ```
 
-3. Calculate similarities for the test.csv file (fill the sim column of the test.csv file).
-4. Run the evaluation:
+4. Calculate similarities for the test.csv file (fill the sim column of the test.csv file).
 
-```
-./evaluation_test.py ~/path/to/your/test.csv
-```
+5. Run the evaluation:
+
+    ```
+    ./evaluation_test.py ~/path/to/your/test.csv
+    ```
 
 Results of the evaluations are printet to stdout. Most essential metrics are also printed to stderr. You should see something like this:
 
