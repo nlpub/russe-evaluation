@@ -27,8 +27,8 @@ This are instructions are for Ubuntu Linux, but the script should work well on M
 5. Run the evaluation:
 
     ```
-    ./evaluation_test.py test-sample.csv
-    ./evaluation_test.py ~/path/to/your/test.csv
+    ./evaluate_test.py test-sample.csv
+    ./evaluate_test.py ~/path/to/your/test.csv
     ```
 
 Results of the evaluations are printet to stdout. Most essential metrics are also printed to stderr. You should see something like this:
