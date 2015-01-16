@@ -5,7 +5,7 @@ from pandas import read_csv, Series
 from collections import defaultdict
 import argparse
 from sys import stderr
-from russe.evaluation.eval import hj_evaluation, semantic_relation_classification_evaluation
+from evaluate import hj_evaluation, semantic_relation_classification_evaluation
 
 
 TEST_DIR = "."  #/home/sasha/tmp/russe/eval/dataset/test"

@@ -9,7 +9,7 @@ import numpy as np
 from sklearn.metrics import average_precision_score, precision_recall_curve, \
     accuracy_score, roc_auc_score, classification_report
 
-HJ_FILE = "hj-test.csv"
+HJ_FILE = "hj-submission.csv"
 SRC_FILE = "src-submission.csv"
 SHOW = False
 

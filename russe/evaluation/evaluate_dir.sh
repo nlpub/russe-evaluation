@@ -9,7 +9,7 @@ for submission in `find $1 -maxdepth 1 -type d | sort` ; do
 done
 
 
-# print entire results table with python
+# print entire results table 
 # read all results.txt
 # save the results
 echo "===================================================="
