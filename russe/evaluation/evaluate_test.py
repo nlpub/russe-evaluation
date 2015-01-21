@@ -8,13 +8,13 @@ from sys import stderr
 from evaluate import hj_evaluation, semantic_relation_classification_evaluation
 
 
-TEST_DIR = "."  
-TEST_DIR = "/home/sasha/tmp/russe/eval/dataset/test"
+TEST = True  # if true use *-test.csv for evaulation, else use *-train.csv 
+DATA_DIR = "."  # the directory where *-test.csv and *-train.csv lives
 
-HJ_TEST = join(TEST_DIR, "hj-test.csv")
-RT_TEST = join(TEST_DIR, "rt-test.csv")
-AE_TEST = join(TEST_DIR, "ae-test.csv")
-AE2_TEST = join(TEST_DIR, "ae2-test.csv")
+HJ_TEST = join(DATA_DIR, "hj-test.csv" if TEST else "hj-train.csv")
+RT_TEST = join(DATA_DIR, "rt-test.csv" if TEST else "rt-train.csv")
+AE_TEST = join(DATA_DIR, "ae-test.csv" if TEST else "ae-train.csv")
+AE2_TEST = join(DATA_DIR, "ae2-test.csv" if TEST else "ae2-train.csv")
 
 
 def get_test(test_fpath):
