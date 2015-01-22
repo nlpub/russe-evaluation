@@ -22,12 +22,13 @@ This are instructions are for Ubuntu Linux, but the script should work well on M
     cd ./russe-evaluation/russe/evaluation
     ```
 
-4. Calculate similarities for the test.csv file (fill the sim column of the test.csv file).
+4. Calculate similarities for the train.csv file (fill the sim column of the train.csv file).
 
 5. Run the evaluation:
 
     ```
-    ./evaluate_test.py test-sample.csv
+    ./evaluate_test.py train-sample.csv
+    ./evaluate_test.py ~/path/to/your/train.csv
     ./evaluate_test.py ~/path/to/your/test.csv
     ```
 
