@@ -1,3 +1,14 @@
+Description of the data
+------------------------
+
+1. **hj-(test|train).csv** -- human judgements
+2. **rt-(test|train).csv** -- synonyms, hypernyms and hyponyms from RuThes Lite
+3. **ae-(test|train).csv** -- associations from the Russian Associative Thesaurus
+4. **ae2-(test|train).csv** -- associations from the Sociation.org
+
+Please note that, all negative samples from the **training datasets** (\*-train.csv) are generated automatically and are **not validated manually**. From the other hand, all negative samples from the **test datasets** (\*-train.csv) are generated automatically and **are validated manually**.
+
+
 Running evaluation script 
 --------------------
 
