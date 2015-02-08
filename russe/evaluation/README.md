@@ -32,14 +32,19 @@ This are instructions are for Ubuntu Linux, but the script should work well on M
     cd ./russe-evaluation/russe/evaluation
     ```
 
-4. Calculate similarities for the train.csv file (fill the sim column of the train.csv file).
+4. Calculate similarities for the *test.csv* and *train.csv* file (fill the sim column in these files).
 
 5. Run the evaluation:
 
     ```
-    ./evaluate_test.py train-sample.csv
+    # test if it works on our sample data 
+    ./evaluate_test.py train-sample.csv  
+
+    # evaluate your model on the training data
     ./evaluate_test.py ~/path/to/your/train.csv
-    ./evaluate_test.py ~/path/to/your/test.csv
+
+    # evaluate your model on the training data 
+    ./evaluate_test.py ~/path/to/your/test.csv 
     ```
 
 Results of the evaluations are printet to stdout. Most essential metrics are also printed to stderr. You should see something like this:
