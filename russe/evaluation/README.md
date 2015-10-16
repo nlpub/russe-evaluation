@@ -47,7 +47,7 @@ This are instructions are for Ubuntu Linux, but the script should work well on M
     ./evaluate_test.py ~/path/to/your/test.csv 
     ```
 
-Results of the evaluations are printet to stdout. Most essential metrics are also printed to stderr. You should see something like this:
+Results of the evaluations are printed to stdout. Most essential metrics are also printed to stderr. You should see something like this:
 
 
 ```

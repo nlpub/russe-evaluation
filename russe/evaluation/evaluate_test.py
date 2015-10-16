@@ -58,8 +58,6 @@ def create_usim(df_fpath, test_fpath):
 
 
 def evaluation(args):
-    #hj_evaluation("/home/sasha/tmp/russe/eval/train-submission/ae2-test-usim.csv")
-    #return
     
     print "test.csv:", args.test_fpath
 
@@ -90,7 +88,4 @@ def main():
 
 if __name__ == '__main__':
     main()
-
-
-
 
