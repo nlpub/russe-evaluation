@@ -89,7 +89,7 @@ def print_y(y_test, y_score):
 
 def predict_by_sim(df_fpath):
     df = read_csv(df_fpath, ',', encoding='utf8', error_bad_lines=False, warn_bad_lines=False)
-    df = df.sort(['word1', 'usim' , 'word2'], ascending=[1, 0, 1]) # by word2 in order to deal with many zeros and a pre-sorted frame
+    df = df.sort_values(['word1', 'usim' , 'word2'], ascending=[1, 0, 1]) # by word2 in order to deal with many zeros and a pre-sorted frame
     
     df_group = df.groupby(["word1"], sort=False).count()
     rel_num = {r.name: r.word2 for i, r in df_group.iterrows()}
